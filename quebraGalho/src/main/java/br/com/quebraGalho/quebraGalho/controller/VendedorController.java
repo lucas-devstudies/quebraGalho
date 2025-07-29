@@ -1,5 +1,7 @@
 package br.com.quebraGalho.quebraGalho.controller;
 
+import br.com.quebraGalho.quebraGalho.entity.Administrador;
+import br.com.quebraGalho.quebraGalho.entity.LoginRequest;
 import br.com.quebraGalho.quebraGalho.entity.Vendedor;
 import br.com.quebraGalho.quebraGalho.service.VendedorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +59,15 @@ public class VendedorController {
         try {
             List<Vendedor> lista = this.vendedorService.findAll();
             return new ResponseEntity<>(lista, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+    @GetMapping("/login")
+    public ResponseEntity<Vendedor> login(@RequestBody LoginRequest loginRequest){
+        try {
+            Vendedor v = this.vendedorService.login(loginRequest.getEmail(),loginRequest.getSenha());
+            return new ResponseEntity<>(v, HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }

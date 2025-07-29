@@ -1,6 +1,8 @@
 package br.com.quebraGalho.quebraGalho.controller;
 
 import br.com.quebraGalho.quebraGalho.entity.Avaliacao;
+import br.com.quebraGalho.quebraGalho.entity.AvaliacaoCriacaoDTO;
+import br.com.quebraGalho.quebraGalho.exception.VendedorNuloException;
 import br.com.quebraGalho.quebraGalho.service.AvaliacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/avaliacao")
@@ -17,18 +20,18 @@ public class AvaliacaoController {
     private AvaliacaoService avaliacaoService;
 
     @PostMapping("/add")
-    public ResponseEntity<String> save(@RequestBody Avaliacao avaliacao){
+    public ResponseEntity<String> save(@RequestBody AvaliacaoCriacaoDTO avaliacaoCriacaoDTO){
         try{
-            String mensagem = this.avaliacaoService.add(avaliacao);
+            String mensagem = this.avaliacaoService.add(avaliacaoCriacaoDTO);
             return new ResponseEntity<String>(mensagem, HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<String>("Deu algo errado ao Salvar"+e,HttpStatus.BAD_REQUEST);
         }
     }
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> update(@PathVariable Long id, @RequestBody Avaliacao avaliacao){
+    public ResponseEntity<String> update(@PathVariable Long id, @RequestBody AvaliacaoCriacaoDTO avaliacaoCriacaoDTO){
         try{
-            String mensagem = this.avaliacaoService.update(id,avaliacao);
+            String mensagem = this.avaliacaoService.update(id,avaliacaoCriacaoDTO);
             return new ResponseEntity<String>(mensagem, HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<String>("Deu algo errado ao Salvar"+e,HttpStatus.BAD_REQUEST);
@@ -61,13 +64,15 @@ public class AvaliacaoController {
             return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
         }
     }
-    @GetMapping("/findByVendedor")
-    public ResponseEntity<List<Avaliacao>> findByVendedor(@RequestParam Long id){
+    @GetMapping("/findMediaNotas/{id}")
+    public ResponseEntity<Double> findMediaNotas(@PathVariable Long id){
         try {
-            List<Avaliacao> lista = this.avaliacaoService.findByVendedor(1);
-            return new ResponseEntity<>(lista,HttpStatus.OK);
+            Double media = this.avaliacaoService.findMediaNotas(id);
+            return new ResponseEntity<>(media,HttpStatus.OK);
+        }catch (VendedorNuloException e) {
+            return new ResponseEntity<>(-1.0, HttpStatus.BAD_REQUEST);
         }catch (Exception e){
-            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

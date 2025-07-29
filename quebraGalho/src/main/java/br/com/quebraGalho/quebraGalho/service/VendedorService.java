@@ -1,10 +1,9 @@
 package br.com.quebraGalho.quebraGalho.service;
 
+import br.com.quebraGalho.quebraGalho.entity.Administrador;
 import br.com.quebraGalho.quebraGalho.entity.Profissao;
 import br.com.quebraGalho.quebraGalho.entity.Vendedor;
-import br.com.quebraGalho.quebraGalho.exception.AvaliacaoNulaExcepetion;
-import br.com.quebraGalho.quebraGalho.exception.ProfissaoNaoExistenteException;
-import br.com.quebraGalho.quebraGalho.exception.ProfissaoObrigatoriaException;
+import br.com.quebraGalho.quebraGalho.exception.*;
 import br.com.quebraGalho.quebraGalho.repository.ProfissaoRepository;
 import br.com.quebraGalho.quebraGalho.repository.VendedorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class VendedorService {
@@ -61,4 +61,15 @@ public class VendedorService {
         List<Vendedor> lista =  this.vendedorRepository.findAll();
         return lista;
     }
+    public Vendedor login(String email, String senha){
+            Optional<Vendedor> v = this.vendedorRepository.findByEmail(email);
+            if (v.isEmpty()){
+                throw new AdministradorNuloException("Dados não conferem");
+            }
+            Vendedor vd = v.get();
+            if(vd.getSenha().equals(senha)){
+                return vd;
+            }
+            throw new VendedorNuloException();
+        }
 }

@@ -1,6 +1,7 @@
 package br.com.quebraGalho.quebraGalho.controller;
 
 import br.com.quebraGalho.quebraGalho.entity.Administrador;
+import br.com.quebraGalho.quebraGalho.entity.LoginRequest;
 import br.com.quebraGalho.quebraGalho.entity.Vendedor;
 import br.com.quebraGalho.quebraGalho.service.AdministradorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,11 +53,22 @@ public class AdministradorController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
-    @GetMapping("/findAll")
+    @PostMapping("/findAll")
     public ResponseEntity<List<Administrador>> findAll(){
         try {
             List<Administrador> lista = this.administradorService.findAll();
             return new ResponseEntity<>(lista, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PostMapping("/login")
+    public ResponseEntity<Administrador> login(@RequestBody LoginRequest loginRequest){
+        try {
+            Administrador a = this.administradorService.login(
+                    loginRequest.getEmail(),
+                    loginRequest.getSenha());
+            return new ResponseEntity<>(a, HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
