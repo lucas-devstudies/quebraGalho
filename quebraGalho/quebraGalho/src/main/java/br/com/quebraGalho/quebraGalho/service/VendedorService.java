@@ -1,6 +1,7 @@
 package br.com.quebraGalho.quebraGalho.service;
 
 import br.com.quebraGalho.quebraGalho.entity.Administrador;
+import br.com.quebraGalho.quebraGalho.entity.LoginRequest;
 import br.com.quebraGalho.quebraGalho.entity.Profissao;
 import br.com.quebraGalho.quebraGalho.entity.Vendedor;
 import br.com.quebraGalho.quebraGalho.exception.*;
@@ -50,8 +51,7 @@ public class VendedorService {
         return "Vendedor cadastrado com sucesso";
     }
     public Vendedor findById(Long id){
-        Vendedor v = this.vendedorRepository.findById(id).get();
-        return v;
+        return this.vendedorRepository.findById(id).orElseThrow(VendedorNuloException::new);
     }
     public String delete(Long id){
         this.vendedorRepository.deleteById(id);
@@ -61,15 +61,15 @@ public class VendedorService {
         List<Vendedor> lista =  this.vendedorRepository.findAll();
         return lista;
     }
-    public Vendedor login(String email, String senha){
-            Optional<Vendedor> v = this.vendedorRepository.findByEmail(email);
-            if (v.isEmpty()){
-                throw new AdministradorNuloException("Dados não conferem");
-            }
-            Vendedor vd = v.get();
-            if(vd.getSenha().equals(senha)){
-                return vd;
-            }
+    public Vendedor login(LoginRequest loginRequest){
+        Optional<Vendedor> v = this.vendedorRepository.findByEmail(loginRequest.getEmail());
+        if (v.isEmpty()){
             throw new VendedorNuloException();
         }
+        Vendedor vendedor = v.get();
+        if(vendedor.getSenha().equals(loginRequest.getSenha())){
+            return vendedor;
+        }
+        throw new DadosNaoConferemException();
+    }
 }

@@ -29,4 +29,7 @@ public class Avaliacao {
     //Referencia o que terá 1
     private Vendedor vendedor; //usar sempre esse nome de objeto no postaman
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Cliente cliente;
 }

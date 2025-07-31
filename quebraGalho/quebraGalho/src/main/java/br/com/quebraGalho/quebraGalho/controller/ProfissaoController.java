@@ -18,22 +18,12 @@ public class ProfissaoController {
 
     @PostMapping("/add")
     public ResponseEntity<String> save(@RequestBody Profissao profissao) {
-        try {
-            String mensagem = this.profissaoService.add(profissao);
-            return new ResponseEntity<String>(mensagem, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<String>("Deu algo errado ao Salvar " + e, HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<String>(this.profissaoService.add(profissao), HttpStatus.OK);
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<String> update(@PathVariable Long id, @RequestBody Profissao profissao) {
-        try {
-            String mensagem = this.profissaoService.update(id, profissao);
-            return new ResponseEntity<String>(mensagem, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<String>("Deu algo errado ao Salvar " + e, HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<String>(this.profissaoService.update(id, profissao), HttpStatus.OK);
     }
 
     @GetMapping("/findById/{id}")

@@ -20,12 +20,7 @@ public class VendedorController {
 
     @PostMapping("/add")
     public ResponseEntity<String> save(@RequestBody Vendedor vendedor){
-        try {
-            String mensagem = this.vendedorService.add(vendedor);
-            return new ResponseEntity<String>(mensagem, HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<String>("Deu algo errado ao Salvar "+e, HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<String>(this.vendedorService.add(vendedor), HttpStatus.OK);
     }
     @PutMapping("/update/{id}")
     public ResponseEntity<String> update(@PathVariable Long id, @RequestBody Vendedor vendedor){
@@ -38,12 +33,7 @@ public class VendedorController {
     }
     @GetMapping("/findById/{id}")
     public ResponseEntity<Vendedor> findById(@PathVariable Long id){
-        try {
-            Vendedor v = this.vendedorService.findById(id);
-            return new ResponseEntity<>(v, HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(this.vendedorService.findById(id), HttpStatus.OK);
     }
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id){
@@ -63,13 +53,8 @@ public class VendedorController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<Vendedor> login(@RequestBody LoginRequest loginRequest){
-        try {
-            Vendedor v = this.vendedorService.login(loginRequest.getEmail(),loginRequest.getSenha());
-            return new ResponseEntity<>(v, HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(this.vendedorService.login(loginRequest), HttpStatus.OK);
     }
 }

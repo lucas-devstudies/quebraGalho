@@ -19,17 +19,12 @@ public class AdministradorController {
 
     @PostMapping("/add")
     public ResponseEntity<String> save(@RequestBody Administrador administrador){
-        try {
-            String mensagem = this.administradorService.add(administrador);
-            return new ResponseEntity<String>(mensagem, HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<String>("Deu algo errado ao Salvar "+e, HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<String>(this.administradorService.add(administrador), HttpStatus.OK);
     }
     @PutMapping("/update/{id}")
     public ResponseEntity<String> update(@PathVariable Long id, @RequestBody Administrador administrador){
         try {
-            String mensagem = this.administradorService.update(id,administrador);
+            String mensagem = this.administradorService.update(id, administrador);
             return new ResponseEntity<String>(mensagem, HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<String>("Deu algo errado ao Salvar "+e, HttpStatus.BAD_REQUEST);
@@ -37,12 +32,8 @@ public class AdministradorController {
     }
     @GetMapping("/findById/{id}")
     public ResponseEntity<Administrador> findById(@PathVariable Long id){
-        try {
-            Administrador a = this.administradorService.findById(id);
-            return new ResponseEntity<>(a, HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        Administrador a = this.administradorService.findById(id);
+        return new ResponseEntity<>(a, HttpStatus.OK);
     }
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id){
@@ -64,13 +55,6 @@ public class AdministradorController {
     }
     @PostMapping("/login")
     public ResponseEntity<Administrador> login(@RequestBody LoginRequest loginRequest){
-        try {
-            Administrador a = this.administradorService.login(
-                    loginRequest.getEmail(),
-                    loginRequest.getSenha());
-            return new ResponseEntity<>(a, HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+            return new ResponseEntity<>(this.administradorService.login(loginRequest), HttpStatus.OK);
     }
 }
