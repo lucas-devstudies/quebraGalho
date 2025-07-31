@@ -13,7 +13,7 @@ Criar uma solução backend que permita o cadastro, gerenciamento e consulta de:
 
 ## 🧱 Tecnologias Utilizadas
 
-- ☕ **Java 17+**
+- ☕ **Java 21**
 - 🌱 **Spring Boot**
 - 🌐 **Spring Web**
 - 🧾 **Spring Data JPA**
